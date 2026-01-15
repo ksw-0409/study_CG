@@ -1,0 +1,7 @@
+# lab2 폴더 안의 빌드 결과물 제외
+lab2/build/
+lab2/.vs/
+
+# 기타 임시 파일
+*.ninja_deps
+*.ninja_log
