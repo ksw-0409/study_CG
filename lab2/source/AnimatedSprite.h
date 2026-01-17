@@ -32,7 +32,8 @@ public:
     float getU(){return (float)currentFrame / u+ epsilon; }
     float getV() { return (float)animations[currentAnimName].row / v+ epsilon; }
 
-    void Update(float delta) {
+    void Update(float delta, float fspeed) {
+        speed = fspeed;
         if (animations.find(currentAnimName) == animations.end()) return;
 
         const Animation& anim = animations[currentAnimName];

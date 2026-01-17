@@ -22,15 +22,15 @@ public:
     void Init();
     // game loop
     //void ProcessInput(float dt);
-    void Update(float dt);
+    void Update(float dt,float fspeed);
     void Render();
+    ResourceManager Manager;
+    AnimatedSprite* Anime;
 
 private:
 	int width;
 	int height;
-    ResourceManager Manager;
     SpriteRenderer* Renderer;
-    AnimatedSprite* Anime;
     glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
     float animationTime = 0.0f;
     int currentFrame = 0;

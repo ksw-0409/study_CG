@@ -1,6 +1,11 @@
 #include <GL/gl3w.h>   
 #include <GLFW/glfw3.h>
 
+// ImGui 헤더 추가
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 #include "Game.h"
 #include "ResourceManager.h"
 
@@ -52,9 +57,24 @@ int main(int argc, char* argv[])
         glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
     // 기본적인 초기화 끝 
 
+    //ImGui 초기화 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark(); 
+    // 플랫폼 바인딩 확인
+    if (!ImGui_ImplGlfw_InitForOpenGL(window, true)) {
+        fprintf(stderr, "ImGui GLFW 초기화 실패\n");
+        return -1;
+    }
+    // 렌더러 바인딩 확인 
+    if (!ImGui_ImplOpenGL3_Init("#version 330")) {
+        fprintf(stderr, "ImGui OpenGL3 초기화 실패\n");
+        return -1;
+    }
+
     //그릴 윈도우 생성 
     Game game(SCREEN_WIDTH, SCREEN_HEIGHT);
-
     //어디그릴지 투명도 등등 
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glEnable(GL_BLEND);
@@ -65,6 +85,8 @@ int main(int argc, char* argv[])
 
     float deltaTime = 0.0f;
     float lastFrameTime = 0.0f;
+    static int frameSpeed = 5;
+    float frameSpeedF = 0.5f;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -74,23 +96,55 @@ int main(int argc, char* argv[])
         lastFrameTime = time;
         glfwPollEvents();
 
+        // ImGui
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        //ImGui::ShowDemoWindow();
+        {
+            ImGui::Begin("Settings"); // 창 이름
+            // SliderInt("이름", &변수, 최솟값, 최댓값)
+            ImGui::SliderInt("frameSpeed", &frameSpeed, 1, 10);
+            ImGui::Text("%.1f frameSpeed", frameSpeed*0.1);
+            ImGui::End();
+            frameSpeedF = (float)frameSpeed * 0.1f;
+
+            if (ImGui::Button("Idle")) {
+                game.Anime->setAnimName("Idle");
+            }
+            if (ImGui::Button("Walk")) {
+                game.Anime->setAnimName("Walk");
+            }
+            if (ImGui::Button("Jump")) {
+                game.Anime->setAnimName("Jump");
+            }
+        }
+
         // manage user input
         //first.ProcessInput(deltaTime);
 
         // update game state
-        game.Update(deltaTime);
+        game.Update(deltaTime, frameSpeedF);
 
         // render
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         game.Render();
 
+        //imgui 그리기 
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         //더블버퍼링 깜박임 현상 방지 위해 사용 
         glfwSwapBuffers(window);
     }
 
-    // delete all resources as loaded using the resource manager
-    //game.Manager.Clear();
+    //Imgui 종료 해제
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    game.Manager.Clear();
     glfwTerminate();//os 수준에서 쓴 자원 정리 용 
     return 0;       
 }

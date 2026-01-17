@@ -16,6 +16,7 @@ endif()
 
 set(PROJECT_NAME lab)
 
+find_package(imgui CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(gl3w CONFIG REQUIRED)
@@ -30,7 +31,12 @@ include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/source")
 # Add source to this project's executable.
 add_executable(${PROJECT_NAME} ${SOURCES}   "source/Game.h"  "source/texture.h" "source/texture.cpp" "source/ResourceManager.cpp" "source/ResourceManager.h" "source/main.cpp" "source/spriteRenderer.cpp"  "source/spriteRenderer.h"  "source/AnimatedSprite.h")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm glfw unofficial::gl3w::gl3w)
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+imgui::imgui 
+glm::glm 
+glfw 
+unofficial::gl3w::gl3w
+)
 
 
 

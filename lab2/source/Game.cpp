@@ -18,7 +18,7 @@ void Game::Init() { //세이더 연결, 변화없는 프로젝션행렬 , 이미지쉐이더 유니폼으
     Manager.LoadTexture("textures/cat.png", true, "cat");
     Manager.LoadTexture("textures/background.png", true, "background");
     Anime->setUV(8.0f, 10.0f);
-    Anime->addAnimation("walk", 4, 8);
+    Anime->addAnimation("Walk", 4, 8);
     Anime->addAnimation("Idle", 3, 4);
     Anime->addAnimation("Jump", 8, 7);
     Anime->setAnimName("Idle");
@@ -26,8 +26,8 @@ void Game::Init() { //세이더 연결, 변화없는 프로젝션행렬 , 이미지쉐이더 유니폼으
 // game loop
 //void Game::ProcessInput(float dt) {}
 
-void Game::Update(float dt){
-    Anime->Update(dt);
+void Game::Update(float dt,float fspeed){
+    Anime->Update(dt, fspeed);
 }
 void Game::Render(){
     Renderer->DrawSprite(
