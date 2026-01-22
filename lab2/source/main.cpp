@@ -16,6 +16,7 @@ const unsigned int SCREEN_WIDTH = 800;
 // The height of the screen
 const unsigned int SCREEN_HEIGHT = 600;
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 int main(int argc, char* argv[])
 {
@@ -39,6 +40,7 @@ int main(int argc, char* argv[])
     //OpenGL context생성(context => 구조체 struct) glm3w 초기화
     glfwMakeContextCurrent(window);
     //헬퍼 초기화 : opengl의 함수를 이용하기위한 helper(loader)를 초기화 
+
     if (gl3wInit()) {
         fprintf(stderr, "failed to initialize OpenGL\n");
         return -1;
@@ -83,6 +85,9 @@ int main(int argc, char* argv[])
 
     game.Init();
 
+    glfwSetWindowUserPointer(window, &game);
+    glfwSetKeyCallback(window, key_callback);
+
     float deltaTime = 0.0f;
     float lastFrameTime = 0.0f;
     static int frameSpeed = 5;
@@ -108,20 +113,21 @@ int main(int argc, char* argv[])
             ImGui::Text("%.1f frameSpeed", frameSpeed*0.1);
             ImGui::End();
             frameSpeedF = (float)frameSpeed * 0.1f;
-
+            /*
             if (ImGui::Button("Idle")) {
-                game.Anime->setAnimName("Idle");
+                game.Cat->setAnimName("Idle");
             }
             if (ImGui::Button("Walk")) {
-                game.Anime->setAnimName("Walk");
+                game.Cat->setAnimName("Walk");
             }
             if (ImGui::Button("Jump")) {
-                game.Anime->setAnimName("Jump");
+                game.Cat->setAnimName("Jump");
             }
+            */
         }
 
         // manage user input
-        //first.ProcessInput(deltaTime);
+        game.ProcessInput(deltaTime);
 
         // update game state
         game.Update(deltaTime, frameSpeedF);
@@ -147,4 +153,19 @@ int main(int argc, char* argv[])
     game.Manager.Clear();
     glfwTerminate();//os 수준에서 쓴 자원 정리 용 
     return 0;       
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+    void* ptr = glfwGetWindowUserPointer(window);
+    Game* game = static_cast<Game*>(ptr);
+
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    if (key >= 0 && key < 1024) {
+        if (action == GLFW_PRESS)
+            game->Keys[key] = true;
+        else if (action == GLFW_RELEASE) 
+            game->Keys[key] = false;
+    }
 }

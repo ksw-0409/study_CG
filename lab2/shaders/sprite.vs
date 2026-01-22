@@ -10,5 +10,6 @@ uniform vec4 spriteOffset;
 void main()
 {
     TexCoords = vertex.zw * spriteOffset.zw + spriteOffset.xy;
+    //크기조절 + 위치 이동 
     gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
 }

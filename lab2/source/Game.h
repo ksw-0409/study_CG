@@ -13,6 +13,8 @@
 #include "spriteRenderer.h"
 #include"ResourceManager.h"
 #include"AnimatedSprite.h"
+#include"Player.h"
+
 
 class Game {
 public:
@@ -21,16 +23,19 @@ public:
 
     void Init();
     // game loop
-    //void ProcessInput(float dt);
+    void ProcessInput(float dt);
     void Update(float dt,float fspeed);
     void Render();
     ResourceManager Manager;
-    AnimatedSprite* Anime;
+    AnimatedSprite* Cat;
+    AnimatedSprite* Ball;
+    bool Keys[1024] = { false };
 
 private:
 	int width;
 	int height;
     SpriteRenderer* Renderer;
+    Player* PlayerCat;
     glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
     float animationTime = 0.0f;
     int currentFrame = 0;

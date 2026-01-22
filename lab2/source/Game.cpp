@@ -1,6 +1,9 @@
 #include"Game.h"
 
-Game::Game(int width, int height) :width(width), height(height) { Anime = new AnimatedSprite(0.3f); }
+Game::Game(int width, int height) :width(width), height(height) {
+    Cat = new AnimatedSprite(0.3f);
+    Ball = new AnimatedSprite(0.3f);
+}
 Game::~Game() {
     if (Renderer) {
         delete Renderer;
@@ -17,31 +20,44 @@ void Game::Init() { //세이더 연결, 변화없는 프로젝션행렬 , 이미지쉐이더 유니폼으
     Renderer = new SpriteRenderer(*Shader);
     Manager.LoadTexture("textures/cat.png", true, "cat");
     Manager.LoadTexture("textures/background.png", true, "background");
-    Anime->setUV(8.0f, 10.0f);
-    Anime->addAnimation("Walk", 4, 8);
-    Anime->addAnimation("Idle", 3, 4);
-    Anime->addAnimation("Jump", 8, 7);
-    Anime->setAnimName("Idle");
+    Cat->setUV(8.0f, 10.0f);
+    Cat->addAnimation("Walk", 4, 8,true);
+    Cat->addAnimation("Idle", 3, 4, true);
+    Cat->addAnimation("Jump", 8, 5,false);
+    Cat->setAnimName("Idle");
+
+    PlayerCat = new Player(Cat, width, height);
 }
 // game loop
-//void Game::ProcessInput(float dt) {}
+void Game::ProcessInput(float dt) {
+    PlayerCat->ProcessInput(this->Keys, dt);
+}
 
 void Game::Update(float dt,float fspeed){
-    Anime->Update(dt, fspeed);
+    Cat->Update(dt, fspeed);
+    PlayerCat->Update(dt);
 }
 void Game::Render(){
     Renderer->DrawSprite(
         *Manager.GetTexture("background"),
-        glm::vec2(-300.0f, 0.0f), 
+        glm::vec2(0.0f, 0.0f), 
         glm::vec2(1600.0f, 900.0f)
     );
 
-    glm::vec4 currentUV = glm::vec4(Anime->getU(), Anime->getV(), 1.0f / 8.0f, 1.0f / 10.0f);
+    //(시작 위치 U, 시작 위치 V, 가로 폭, 세로 높이)
+    glm::vec4 currentUV = glm::vec4(Cat->getU(), Cat->getV(), 1.0f / 8.0f, 1.0f / 10.0f);
+    float direction = (PlayerCat->isFlip()) ? -1.0f : 1.0f;
+    glm::vec2 renderPos = PlayerCat->getPosition();
+    // 뒤집을때 이미지 너비만큼 x축 이동
+    if (PlayerCat->isFlip()) {
+        renderPos.x += 250.0f; // 캐릭터 가로 크기만큼 더해줌
+    }
+
     Renderer->DrawSprite(
         *Manager.GetTexture("cat"),
-        glm::vec2(200.0f, 200.0f),
+        renderPos,
         currentUV,
-        glm::vec2(300.0f, 300.0f), 
+        glm::vec2(300.0f* direction, 300.0f),
         0.0f, 
         glm::vec3(1.0f, 1.0f, 1.0f));
 }
