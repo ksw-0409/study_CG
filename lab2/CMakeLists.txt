@@ -29,7 +29,7 @@ file(GLOB_RECURSE SOURCES
 include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 # Add source to this project's executable.
-add_executable(${PROJECT_NAME} ${SOURCES}   "source/Game.h"  "source/texture.h" "source/texture.cpp" "source/ResourceManager.cpp" "source/ResourceManager.h" "source/main.cpp" "source/spriteRenderer.cpp"  "source/spriteRenderer.h"  "source/AnimatedSprite.h" "source/Player.h")
+add_executable(${PROJECT_NAME} ${SOURCES}   "source/Game.h"  "source/texture.h" "source/texture.cpp" "source/ResourceManager.cpp" "source/ResourceManager.h" "source/main.cpp" "source/spriteRenderer.cpp"  "source/spriteRenderer.h"  "source/AnimatedSprite.h" "source/Player.h" "source/Player2.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
 imgui::imgui 

@@ -14,6 +14,7 @@
 #include"ResourceManager.h"
 #include"AnimatedSprite.h"
 #include"Player.h"
+#include"Player2.h"
 
 
 class Game {
@@ -28,7 +29,7 @@ public:
     void Render();
     ResourceManager Manager;
     AnimatedSprite* Cat;
-    AnimatedSprite* Ball;
+    AnimatedSprite* Cat2;
     bool Keys[1024] = { false };
 
 private:
@@ -36,9 +37,9 @@ private:
 	int height;
     SpriteRenderer* Renderer;
     Player* PlayerCat;
+    Player2* PlayerCat2;
     glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
     float animationTime = 0.0f;
-    int currentFrame = 0;
 };
 
 #endif // GAME_H

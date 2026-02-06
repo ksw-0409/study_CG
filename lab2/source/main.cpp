@@ -155,13 +155,16 @@ int main(int argc, char* argv[])
     return 0;       
 }
 
+//콜백함수 문법 대로 매개변수 처리  
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
     void* ptr = glfwGetWindowUserPointer(window);
     Game* game = static_cast<Game*>(ptr);
+    //게임창 포인터 추출 위해 
 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    //키 입력 처리 배열기반 관리 
     if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS)
             game->Keys[key] = true;
