@@ -1,0 +1,41 @@
+{
+  "textureName": "knight",
+  "texturePath": "assets/textures/knight.png",
+
+  "grid": {
+    "columns": 8,
+    "rows": 7
+  },
+
+  "animations": [
+    { "name": "IDLE",
+      "row": 0,
+      "frameCount": 4,
+      "loop": true
+    },
+    {
+      "name": "RUN",
+      "row": 2,
+      "frameCount": 8,
+      "loop": true
+    },
+    {
+      "name": "ROLL",
+      "row": 4,
+      "frameCount": 8,
+      "loop": false
+    },
+    {
+      "name": "HIT",
+      "row": 5,
+      "frameCount": 4,
+      "loop": false
+    },
+    {
+      "name": "DEATH",
+      "row": 6,
+      "frameCount": 4,
+      "loop": false
+    }
+  ]
+}
