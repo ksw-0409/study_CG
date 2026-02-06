@@ -1,0 +1,45 @@
+#ifndef GAME_H
+#define GAME_H
+
+#include <GL/gl3w.h>
+#include <GLFW/glfw3.h>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <iostream>
+#include <string>
+#include<memory>
+
+#include "Program.h"
+#include "spriteRenderer.h"
+#include"ResourceManager.h"
+#include"AnimatedSprite.h"
+#include"Player.h"
+#include"Player2.h"
+
+
+class Game {
+public:
+    Game(int width, int height);
+    ~Game();
+
+    void Init();
+    // game loop
+    void ProcessInput(float dt);
+    void Update(float dt,float fspeed);
+    void Render();
+    ResourceManager Manager;
+    AnimatedSprite* Cat;
+    AnimatedSprite* Cat2;
+    bool Keys[1024] = { false };
+
+private:
+	int width;
+	int height;
+    SpriteRenderer* Renderer;
+    Player* PlayerCat;
+    Player2* PlayerCat2;
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
+    float animationTime = 0.0f;
+};
+
+#endif // GAME_H
