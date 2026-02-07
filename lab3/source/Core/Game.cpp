@@ -15,26 +15,30 @@ Game::~Game() {
         Shader->BindProgram();
         Shader->SetMatrix("projection", projection);
         Shader->SetTexture("image", 0);
-
         Renderer = new SpriteRenderer(*Shader);
-        Manager.LoadTexture("textures/cat.png", true, "cat");
-        Manager.LoadTexture("textures/background.png", true, "background");
-        Cat->setUV(8.0f, 10.0f);
-        Cat->addAnimation("Walk", 4, 8,true);
-        Cat->addAnimation("Idle", 3, 4, true);
-        Cat->addAnimation("Jump", 8, 5,false);
-        Cat->setAnimName("Idle");
-    
+
+        player = new Player(this->width, this->height, new Sprite2D());
+
+        SpriteLoader::LoadConfig("assets/data/knight.json", player, Manager);
     }
 // game loop
 void Game::ProcessInput(float dt) {
-    PlayerCat->ProcessInput(this->Keys, dt);
+    player->ProcessInput(this->Keys, dt);
 }
 
 void Game::Update(float dt,float fspeed){
-    Cat->Update(dt, fspeed);
-    PlayerCat->Update(dt);
+    player->Update(dt);
 }
 void Game::Render(){
-
+        // Sprite2D에서 최신 UV와 텍스처 정보를 가져옵니다.
+        Renderer->DrawSprite(
+            *Manager.GetTexture("knight"),
+            player->GetPosition(),
+            player->GetSprite2D()->GetUV(), // AnimatedSprite에 의해 업데이트된 UV
+            player->GetSprite2D()->GetSize(), 
+            0.0f,
+            glm::vec3(1.0f),
+            player->isFlip() // ProcessInput에서 결정된 뒤집기 상태
+        );
+    
 }

@@ -17,7 +17,7 @@ SpriteRenderer::~SpriteRenderer()
 
 //모델행렬 계산, 받은 칼라 -> 두개값 유니폼으로 전달 
 void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec4 uvOffset,
-    glm::vec2 size, float rotate, glm::vec3 color)
+    glm::vec2 size, float rotate, glm::vec3 color, bool flipX)
 {
     // prepare transformations
     this->shader.BindProgram();
@@ -31,7 +31,13 @@ void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec
     model = glm::rotate(model, glm::radians(rotate), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f));
 
-    model = glm::scale(model, glm::vec3(size, 1.0f));
+    if (flipX) {
+        model = glm::translate(model, glm::vec3(size.x, 0.0f, 0.0f)); // 오른쪽으로 밀고
+        model = glm::scale(model, glm::vec3(-size.x, size.y, 1.0f));  // 가로축을 뒤집음
+    }
+    else {
+        model = glm::scale(model, glm::vec3(size.x, size.y, 1.0f));
+    }
 
     this->shader.SetMatrix("model", model);
     this->shader.SetVector("spriteColor", glm::vec3(color.x, color.y, color.z));
@@ -41,10 +47,6 @@ void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec
     glBindVertexArray(this->quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
-}
-
-void SpriteRenderer::DrawSprite(Texture2D& texture, glm::vec2 position, glm::vec2 size) {
-    this->DrawSprite(texture, position, glm::vec4(0, 0, 1, 1), size, 0.0f, glm::vec3(1.0f));
 }
 
 //맨 처음 렌더링 데이터 초기화용 VAO VBO싹다 초기화

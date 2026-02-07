@@ -23,8 +23,11 @@ public:
     AnimatedSprite2D() : currentAnimIndex(-1), currentFrame(0), timer(0.0f), speedMultiplier(1.0f) {}
    
     //애니메이션 종류 추가(ex walk 몇행 몇개프레임 추가) 제이슨 자동화 하기 
-    void addAnimation(int index, const Animation& anim) {
-        animations.push_back(anim);
+    void addAnimation(const int index,const Animation& anim) {
+        if (animations.size() <= index) {
+            animations.resize(index + 1);
+        }
+        animations[index] = anim;
     }
 
     // 재생할 애니메이션 설정

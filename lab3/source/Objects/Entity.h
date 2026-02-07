@@ -27,13 +27,17 @@ public:
 
     glm::vec2 GetPosition() const { return position; }
     void SetPosition(glm::vec2 position) { this->position = position; }
+    AnimatedSprite2D* GetAnimatedSprite2D() { return AnimatedSprite; }
+    Sprite2D* GetSprite2D() { return Sprite; }
 
+    //버추얼 사용해서 플레이어나 에너미 에서 업데이트 사용시 그 자식의 함수가 실행할수있도록 구현 
     virtual void Update(float delta) {
         // 애니메이션 있다면 스프라이트의 UV를 업데이트함
         if (AnimatedSprite != nullptr && Sprite != nullptr) {
             AnimatedSprite->Update(delta, Sprite);
         }
     }
+
     bool isFlip() const { return flipX; }
 };
 

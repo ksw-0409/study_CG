@@ -6,10 +6,6 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-// json ÇØ´õ 
-#include <nlohmann/json.hpp>
-using json = nlohmann::json;
-
 #include "Game.h"
 #include "ResourceManager.h"
 
@@ -118,17 +114,6 @@ int main(int argc, char* argv[])
             ImGui::Text("%.1f frameSpeed", frameSpeed*0.1);
             ImGui::End();
             frameSpeedF = (float)frameSpeed * 0.1f;
-            /*
-            if (ImGui::Button("Idle")) {
-                game.Cat->setAnimName("Idle");
-            }
-            if (ImGui::Button("Walk")) {
-                game.Cat->setAnimName("Walk");
-            }
-            if (ImGui::Button("Jump")) {
-                game.Cat->setAnimName("Jump");
-            }
-            */
         }
 
         // manage user input

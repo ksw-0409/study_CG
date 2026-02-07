@@ -14,8 +14,9 @@ private:
     float height;
 public:
     Player(float w, float h, Sprite2D* spr)
-        : Entity(glm::vec2(100.0f, 300.0f), glm::vec2(64.0f, 64.0f), spr),
-        width(w), height(h), velocity(0.0f, 0.0f), isGround(false) {
+        : Entity(glm::vec2(400.0f, 300.0f), glm::vec2(100.0f, 100.0f), spr),
+        width(w), height(h), velocity(0.0f, 0.0f), isGround(true) {
+        AnimatedSprite = new AnimatedSprite2D();
     }
 
     void ProcessInput(bool keys[], float dt) {
@@ -33,20 +34,18 @@ public:
         else  {
             if(isGround)AnimatedSprite->play(0); //Idle
         }
-
+        
         if (keys[GLFW_KEY_UP] && isGround) {
-            velocity.y -= jumpFoce;
-            isGround = false;
-            AnimatedSprite->play(2); //jump
-            position.y=-1.0f;
+            AnimatedSprite->play(2); //rull
+           // position.y=-1.0f;
         }
     }
 
     void Update(float dt) {
         const float GRAVITY = 400.0f;
-        velocity.y += GRAVITY * dt; //공중 가는 속도 중력으로 조정 
+       // velocity.y += GRAVITY * dt; //공중 가는 속도 중력으로 조정 
         position += velocity * dt; //위치를 속도로 변화
-
+        /*
         //지면판별
         float groundLevel = 500.0f; // 화면 하단 기준 설정
         if (position.y >= groundLevel) { //땅 밑으로 갈경우 
@@ -58,8 +57,7 @@ public:
         //좌우 막기 
         if (position.x < 0) position.x = 0;
         if (position.x > width - size.x) position.x = width - size.x;
-
-        //애니메이션 돌기
+        */
         Entity::Update(dt);
     }
 };
