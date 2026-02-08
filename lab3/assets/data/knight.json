@@ -1,7 +1,7 @@
 {
   "textureName": "knight",
   "texturePath": "assets/textures/knight.png",
-  "isAnimated": true,"grid": { 
+  "grid": { 
     "columns": 8,
     "rows": 7
   },

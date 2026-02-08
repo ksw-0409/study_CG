@@ -14,7 +14,6 @@ public:
     }
     glm::vec4 GetUV() const { return uv; }
     glm::vec2 GetSize() const { return size; }
-
     // 애니메이터가 이 함수를 호출하여 화면에 보일 프레임을 바꿈
     void SetUV(const glm::vec4& newUV) { uv = newUV; }
 

@@ -40,7 +40,7 @@ foreach(FILE ${SOURCES})
 endforeach()
 
 # 4. 실행 파일 생성
-add_executable(${PROJECT_NAME} ${SOURCES} "source/Objects/Sprite2D.h" "source/Managers/SpriteLoader.h")
+add_executable(${PROJECT_NAME} ${SOURCES} "source/Objects/Sprite2D.h" "source/Managers/SpriteLoader.h" "source/Objects/TileMap.h")
 
 # 5. 라이브러리 연결
 target_link_libraries(${PROJECT_NAME} PRIVATE 

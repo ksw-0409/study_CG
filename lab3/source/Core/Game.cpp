@@ -18,8 +18,14 @@ Game::~Game() {
         Renderer = new SpriteRenderer(*Shader);
 
         player = new Player(this->width, this->height, new Sprite2D());
-
         SpriteLoader::LoadConfig("assets/data/knight.json", player, Manager);
+
+            Entity* fruit = new Entity();
+            fruit->SetPosition(glm::vec2(300.0f, 300.0f));
+            Manager.LoadTexture("assets/textures/fruit.png", true, "fruit");
+            fruit->SetTextureName("fruit");
+            object.push_back(fruit);
+        
     }
 // game loop
 void Game::ProcessInput(float dt) {
@@ -30,15 +36,26 @@ void Game::Update(float dt,float fspeed){
     player->Update(dt);
 }
 void Game::Render(){
-        // Sprite2D에서 최신 UV와 텍스처 정보를 가져옵니다.
+    Renderer->DrawSprite(
+        *Manager.GetTexture("knight"),
+        player->GetPosition(),
+        player->GetSprite2D()->GetUV(), 
+        player->GetSprite2D()->GetSize(), 
+        0.0f,
+        glm::vec3(1.0f),
+        player->isFlip() 
+    );
+        
+    for (Entity* ent : object) {
+        std::string texName = ent->GetTextureName();
         Renderer->DrawSprite(
-            *Manager.GetTexture("knight"),
-            player->GetPosition(),
-            player->GetSprite2D()->GetUV(), // AnimatedSprite에 의해 업데이트된 UV
-            player->GetSprite2D()->GetSize(), 
-            0.0f,
-            glm::vec3(1.0f),
-            player->isFlip() // ProcessInput에서 결정된 뒤집기 상태
+            *Manager.GetTexture(texName),   // 엔티티마다 다른 텍스처 불러오게 처리 
+            ent->GetPosition(),            
+            ent->GetSprite2D()->GetUV(),    
+            ent->GetSize(),                 
+            ent->GetRotation(),           
+            glm::vec3(1.0f),                
+            ent->isFlip()                 
         );
-    
+    }
 }

@@ -11,6 +11,7 @@ struct Animation {
     std::vector<glm::vec4> frames; // UV 좌표
     float speed;    // 재생 속도
     bool loop;      // 반복 여부
+    std::string name; //디버깅용 
 };
 
 class AnimatedSprite2D {
@@ -52,6 +53,8 @@ public:
         //안전장치 
         if (currentAnimIndex ==-1 || !targetSprite) return;
         Animation& anim = animations[currentAnimIndex];
+        //디버깅용
+        std::cout << anim.name << std::endl;
         timer += delta * speedMultiplier; // 시간을 누적
         // 타이머가 지정된 속도에 도달하면 다음 프레임으로 교체
         if (timer >= anim.speed) {

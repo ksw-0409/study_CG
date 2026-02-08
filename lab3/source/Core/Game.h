@@ -30,7 +30,7 @@ public:
     bool Keys[1024] = { false };
 
     Player* player;
-    //std::vector<Entity*> object;
+    std::vector<Entity*> object;
 private:
 	int width;
 	int height;

@@ -6,6 +6,7 @@
 #include"AnimatedSprite2D.h"
 
 class Entity {
+    std::string textureName; // 텍스처 이름 
 protected:
     glm::vec2 position; //포지션 
     glm::vec2 size; //사이즈
@@ -15,8 +16,15 @@ protected:
     Sprite2D* Sprite;
     AnimatedSprite2D* AnimatedSprite;
 public:
+    Entity()
+        : textureName(""),position(0.0f, 0.0f), size(1.0f, 1.0f), rotation(0.0f),
+        flipX(false), Sprite(nullptr), AnimatedSprite(nullptr)
+    {
+        Sprite = new Sprite2D();
+    }
+
     Entity(glm::vec2 pos, glm::vec2 s, Sprite2D* spr)
-        : position(pos), size(s), Sprite(spr),
+        : textureName(""),position(pos), size(s), Sprite(spr),
         rotation(0.0f), flipX(false), AnimatedSprite(nullptr) {}
     
     virtual ~Entity() {
@@ -24,7 +32,10 @@ public:
         if (Sprite) delete Sprite;
         if (AnimatedSprite) delete AnimatedSprite;
     }
-
+    void SetTextureName(std::string name) { textureName = name; }
+    std::string GetTextureName()const {  return textureName;  }
+    glm::vec2 GetSize()const { return size; }
+    float GetRotation()const { return rotation; }
     glm::vec2 GetPosition() const { return position; }
     void SetPosition(glm::vec2 position) { this->position = position; }
     AnimatedSprite2D* GetAnimatedSprite2D() { return AnimatedSprite; }

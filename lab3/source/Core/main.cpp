@@ -92,8 +92,8 @@ int main(int argc, char* argv[])
 
     float deltaTime = 0.0f;
     float lastFrameTime = 0.0f;
-    static int frameSpeed = 5;
-    float frameSpeedF = 0.5f;
+    static int frameSpeed = 1;
+    float frameSpeedF;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -111,9 +111,9 @@ int main(int argc, char* argv[])
             ImGui::Begin("Settings"); // 창 이름
             // SliderInt("이름", &변수, 최솟값, 최댓값)
             ImGui::SliderInt("frameSpeed", &frameSpeed, 1, 10);
-            ImGui::Text("%.1f frameSpeed", frameSpeed*0.1);
+            //ImGui::Text("%.1f frameSpeed", frameSpeed*0.1);
             ImGui::End();
-            frameSpeedF = (float)frameSpeed * 0.1f;
+            frameSpeedF = (float)frameSpeed;
         }
 
         // manage user input
