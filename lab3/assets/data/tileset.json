@@ -1,0 +1,41 @@
+{
+  "textureName": "tileset",
+  "texturePath": "assets/textures/world_tileset.png",
+  "sprites": {
+    "floor1": {
+      "id": 0,
+      "x": 0,
+      "y": 0,
+      "w": 16,
+      "h": 16
+    },
+    "tree1": {
+      "id": 1,
+      "x": 96,
+      "y": 47,
+      "w": 16,
+      "h": 50
+    },
+    "background1": {
+      "id": 2,
+      "x": 0,
+      "y": 144,
+      "w": 16,
+      "h": 16
+    },
+    "background2": {
+      "id": 3,
+      "x": 0,
+      "y": 160,
+      "w": 16,
+      "h": 16
+    },
+    "background3": {
+      "id": 4,
+      "x": 0,
+      "y": 176,
+      "w": 16,
+      "h": 16
+    }
+  }
+}
