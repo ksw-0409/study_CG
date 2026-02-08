@@ -21,23 +21,21 @@ public:
 
     void ProcessInput(bool keys[], float dt) {
         velocity.x = 0.0f;
-        if (keys[GLFW_KEY_LEFT]) {
+        if (keys[GLFW_KEY_SPACE]) {
+            AnimatedSprite->play(2); // ROLL
+        }
+        else if (keys[GLFW_KEY_LEFT]) {
             velocity.x = -moveSpeed;
-            if (isGround)AnimatedSprite->play(1); //Run
             flipX = true;
+            if (isGround) AnimatedSprite->play(1); // RUN
         }
         else if (keys[GLFW_KEY_RIGHT]) {
             velocity.x = moveSpeed;
-            if (isGround) AnimatedSprite->play(1); //Run
             flipX = false;
+            if (isGround) AnimatedSprite->play(1); // RUN
         }
-        else  {
-            if(isGround)AnimatedSprite->play(0); //Idle
-        }
-        
-        if (keys[GLFW_KEY_UP] && isGround) {
-            AnimatedSprite->play(2); //rull
-           // position.y=-1.0f;
+        else {
+            if (isGround) AnimatedSprite->play(0); // IDLE
         }
     }
 
@@ -58,6 +56,7 @@ public:
         if (position.x < 0) position.x = 0;
         if (position.x > width - size.x) position.x = width - size.x;
         */
+        
         Entity::Update(dt);
     }
 };

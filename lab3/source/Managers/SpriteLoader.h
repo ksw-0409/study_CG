@@ -18,41 +18,46 @@ public:
         json data = json::parse(file);
 
         // 텍스처 로드
+        //uv 계산 위한 텍스처 전체 사이즈 
         manager.LoadTexture(data["texturePath"].get<std::string>().c_str(), true, data["textureName"]);
+        auto texture = manager.GetTexture(data["textureName"]);
+        float texWidth = static_cast<float>(texture->Width);
+        float texHeight = static_cast<float>(texture->Height);
 
         //애니메이션 여부 확인
         bool isAnimated = data.value("isAnimated", false); // 기본값 false
+
+        //콜론 로우 
+        int rows = data["grid"]["rows"];
+        int cols = data["grid"]["columns"];
+
         //애니메이션일경우       
         if (isAnimated) {
-            // 시트의 전체 칸 수 가져오기
-            float cols = data["grid"]["columns"];
-            float rows = data["grid"]["rows"];
-
             // 애니메이션 데이터 
             for (auto it = data["animations"].begin(); it != data["animations"].end(); ++it) {
                 Animation anim;
-
-                anim.speed = it.value()["speed"];
-                anim.loop = it.value()["loop"];
-
-                int row = it.value()["row"];
-                int frameCount = it.value()["frameCount"];
-
-                // 해당 애니메이션의 모든 프레임 UV를 미리 계산해서 저장
-
-                //칸 크기 먼저 구함
-                float width = 1.0f / cols;
-                float height = 1.0f / rows;
+                auto thisAnim = it.value();
+                //기본 정보
+                anim.speed = thisAnim["speed"];
+                anim.loop = thisAnim["loop"];
+                int frameCount = thisAnim["frameCount"];
+                //첫프레임 포지션 
+                float startX = thisAnim["startX"];
+                float startY = thisAnim["startY"];
+                //칸 크기
+                float widthF = thisAnim["frameWidth"];
+                float heightF = thisAnim["frameHeight"];
+                float widthUV= widthF / texWidth;
+                float heightUV = heightF / texHeight;
 
                 for (int i = 0; i < frameCount; i++) {
                     // UV 좌표 계산 2줄일 경우도 가능하도록 수정 
-                    float u = (float)(i % (int)cols) * width;
-                    float v = (float)(row + i / (int)cols) * height;
-
-                    anim.frames.push_back(glm::vec4(u , v , width , height));
+                    float u = ((float)(i % (int)cols) * widthF + startX)/ texWidth;
+                    float v = ((float)(i / (int)cols) * heightF + startY)/texHeight;
+                    anim.frames.push_back(glm::vec4(u , v , widthUV , heightUV));
                 }
                 // AnimatedSprite2D에 완성된 Animation 구조체 전달
-                target->GetAnimatedSprite2D()->addAnimation(it.value()["index"],anim);
+                target->GetAnimatedSprite2D()->addAnimation(thisAnim["index"],anim);
             }
         }
         else {//애니메이션이 아닐경우 

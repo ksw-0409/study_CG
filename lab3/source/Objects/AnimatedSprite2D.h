@@ -15,12 +15,13 @@ struct Animation {
 
 class AnimatedSprite2D {
     std::vector<Animation> animations;      // 애니메이션 데이터 저장소
-    int currentAnimIndex;                    // 현재 재생 중인 이름
+    int currentAnimIndex;                   // 현재 재생 중인 이름
     int currentFrame;                       // 현재 프레임 인덱스
     float timer;                            // 시간 누적용 타이머
     float speedMultiplier;                  // 전체 속도 조절
+    bool isFinished = false;                // 현재 애니메이션의 종료 여부
 public:
-    AnimatedSprite2D() : currentAnimIndex(-1), currentFrame(0), timer(0.0f), speedMultiplier(1.0f) {}
+    AnimatedSprite2D() : currentAnimIndex(0), currentFrame(0), timer(0.0f), speedMultiplier(1.0f) {}
    
     //애니메이션 종류 추가(ex walk 몇행 몇개프레임 추가) 제이슨 자동화 하기 
     void addAnimation(const int index,const Animation& anim) {
@@ -33,27 +34,39 @@ public:
     // 재생할 애니메이션 설정
     void play(const int index) {
         if (index < 0 || index >= animations.size()) return;
+        //루프 애니메이션이 재생중이면 변경 X
+        if (!animations[currentAnimIndex].loop && !isFinished) {
+            return;
+        }
         if (currentAnimIndex == index) return; // 이미 재생 중이면 무시
+
+        //새로운 애니메이션 시작 
         currentAnimIndex = index;
         currentFrame = 0;
-        timer = 0.0f;
+        timer = 0.0f; 
+        isFinished = false;
     }
 
     // 핵심 업데이트 로직 
     void Update(float delta, Sprite2D* targetSprite) {
         //안전장치 
         if (currentAnimIndex ==-1 || !targetSprite) return;
-
         Animation& anim = animations[currentAnimIndex];
         timer += delta * speedMultiplier; // 시간을 누적
         // 타이머가 지정된 속도에 도달하면 다음 프레임으로 교체
         if (timer >= anim.speed) {
             timer = 0.0f;
-            currentFrame++;
-            // 마지막 프레임 처리
-            if (currentFrame >= (int)anim.frames.size()) {
-                if (anim.loop) currentFrame = 0;
-                else currentFrame = anim.frames.size() - 1;
+            if (currentFrame + 1 < anim.frames.size()) {
+                currentFrame++;
+            }
+            else {
+                // 마지막 프레임에 도달했을 때
+                if (anim.loop) {
+                    currentFrame = 0; // 루프라면 처음으로
+                }
+                else {
+                    isFinished = true; // 루프가 아니라면 종료 처리
+                }
             }
             targetSprite->SetUV(anim.frames[currentFrame]);
         }

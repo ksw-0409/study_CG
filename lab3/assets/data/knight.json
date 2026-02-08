@@ -1,43 +1,57 @@
 {
   "textureName": "knight",
   "texturePath": "assets/textures/knight.png",
-  "isAnimated": true, 
-  "grid": { 
+  "isAnimated": true,"grid": { 
     "columns": 8,
     "rows": 7
   },
-  "animations": { 
+  "animations": {
     "IDLE": {
       "index": 0,
-      "row": 0,
+      "startX": 0,
+      "startY": 0,
+      "frameWidth": 32,
+      "frameHeight": 32,
       "frameCount": 4,
       "speed": 0.1,
       "loop": true
     },
     "RUN": {
       "index": 1,
-      "row": 2,
-      "frameCount": 8,
+      "startX": 0,
+      "startY": 64,
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "frameCount": 16,
       "speed": 0.1,
       "loop": true
     },
     "ROLL": {
       "index": 2,
-      "row": 4,
+      "startX": 0,
+      "startY": 160,
+      "frameWidth": 32,
+      "frameHeight": 32,
       "frameCount": 8,
       "speed": 0.1,
       "loop": false
     },
     "HIT": {
       "index": 3,
-      "row": 5,
+      "startX": 0,
+      "startY": 192,
+      "frameWidth": 32,
+      "frameHeight": 32,
       "frameCount": 4,
       "speed": 0.1,
       "loop": false
     },
     "DEATH": {
       "index": 4,
-      "row": 6,
+      "startX": 0,
+      "startY": 224,
+      "frameWidth": 32,
+      "frameHeight": 32,
       "frameCount": 4,
       "speed": 0.1,
       "loop": false
